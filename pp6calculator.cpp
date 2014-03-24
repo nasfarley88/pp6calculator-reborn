@@ -1,5 +1,13 @@
 #include <iostream>
 #include <string>
+#include <regex>
+
+double interceptXAxis(double m, double c) {
+  ///
+  /// A function to calculate the intercept on the x-axis of a straight line
+  /// 
+  return c/m;
+}
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +24,11 @@ int main(int argc, char *argv[])
 	    << std::endl
 	    << "> ";
   std::cin >> decision;
-
+  if(std::regex_match(decision, std::regex("(^i$)|(intercept)")))
+    {
+     std::cout << "You have chosen the intercept function!" << std::endl;
+    }
+p
   std::cout << "You chose " << decision << std::endl;
   std::cout << "Sorry, I'm not yet complete enough to give you what you want."
 	    << std::endl
