@@ -16,6 +16,7 @@ public:
   double sety(double y) { y_ = y; return y_; }
   double setz(double z) { z_ = z; return z_; }
   double modulus();
+  // dot product defined in ThreeVector.cpp
 };
 
 #endif
