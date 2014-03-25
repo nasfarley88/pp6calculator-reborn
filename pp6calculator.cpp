@@ -42,7 +42,7 @@ public:
   double setx(double x) { x_ = x; return x_; }
   double sety(double y) { y_ = y; return y_; }
   double setz(double z) { z_ = z; return z_; }
-  double modulus();
+  double modulusSquared();
 };
 
 
@@ -75,8 +75,8 @@ std::ostream& operator<<(std::ostream& s, const ThreeVector& c)
 std::ostream& operator<<(std::ostream& s, const FourVector& c)
 {
   ///
-  /// Print a FourVector in the form (x, y, z)
-  /// 
+  /// Print a FourVector in the form (x, y, z).
+  ///
   s << "(" << c.gett() << ", " << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
   return s;
 }
@@ -85,16 +85,19 @@ double dot(FourVector a, FourVector b)
 {
   ///
   /// Define the dot (inner) product of a FourVector
+  ///
+  /// We're particle physicists so this uses the signature +---.
   /// 
-  return -a.gett()*b.gett() + a.getx()*b.getx() + a.gety()*b.gety() + a.getz()*b.getz();
+
+  return a.gett()*b.gett() - a.getx()*b.getx() - a.gety()*b.gety() - a.getz()*b.getz();
 }
 
-double FourVector::modulus()
+double FourVector::modulusSquared()
 {
   ///
   /// Define the modulus of a FourVector
   /// 
-  return sqrt(dot(*this,*this));
+  return dot(*this,*this);
 }
 
 
@@ -216,6 +219,55 @@ int main(int argc, char *argv[])
       std::cout << "The roots for your chosen quadratic are  "
 		<< quadraticSolver(a,b,c) << std::endl;
     }
+  else if(std::regex_match(decision,std::regex("(^im$)")))
+    {
+      coutChosen("invariant mass of 2 particles");
+
+      // Initialise the four momentum of the particles involved
+      double particleOne[4], particleTwo[4];
+
+      std::cout << "Choose the E term for particle one" << std::endl;
+      promptForValue(&particleOne[0]);
+      std::cout << "Choose the px term for particle one" << std::endl;
+      promptForValue(&particleOne[1]);
+      std::cout << "Choose the py term for particle one" << std::endl;
+      promptForValue(&particleOne[2]);
+      std::cout << "Choose the pz term for particle one" << std::endl;
+      promptForValue(&particleOne[3]);
+
+      std::cout << "Choose the E term for particle two" << std::endl;
+      promptForValue(&particleTwo[0]);
+      std::cout << "Choose the px term for particle two" << std::endl;
+      promptForValue(&particleTwo[1]);
+      std::cout << "Choose the py term for particle two" << std::endl;
+      promptForValue(&particleTwo[2]);
+      std::cout << "Choose the pz term for particle two" << std::endl;
+      promptForValue(&particleTwo[3]);
+
+      FourVector particleOneFV = FourVector(particleOne[0],
+					    particleOne[1],
+					    particleOne[2],
+					    particleOne[3]);
+      FourVector particleTwoFV = FourVector(particleTwo[0],
+					    particleTwo[1],
+					    particleTwo[2],
+					    particleTwo[3]);
+
+      // Check if the invariant mass is real (and therefore physical)
+      if(dot(particleOneFV,particleTwoFV) >= 0)
+	{
+	  std::cout << "The invariant mass for the two particles" << particleOneFV
+		    << " and " << particleTwoFV << " is "
+		    << sqrt(dot(particleOneFV,particleTwoFV)) << std::endl;
+	}
+      else
+	{
+	  std::cout << "The invariant mass for the two particles" << particleOneFV
+		    << " and " << particleTwoFV << " is imaginary." << std::endl;
+	}	  
+    }
+  // This *must* come after invariant mass as .*m$ below also matches ^im$ (the
+  // command for invariant mass which is not a modulus function).
   else if(std::regex_match(decision,std::regex("(.*m$)|(.*modulus.*)")))
     {
       if(std::regex_match(decision,std::regex("(^3m$)|(.*\b3.vector.*modulus.*)")))
@@ -238,7 +290,7 @@ int main(int argc, char *argv[])
 	{
 	  // Initialise variables for the FourVector
 	  double t,x,y,z;
-	  coutChosen("3-vector modulus");
+	  coutChosen("4-vector modulus squared");
 	  std::cout << "Choose the t term: " << std::endl;
 	  promptForValue(&t);
 	  std::cout << "Choose the x term: " << std::endl;
@@ -249,8 +301,8 @@ int main(int argc, char *argv[])
 	  promptForValue(&z);
 	    
 	    
-	  std::cout << "The modulus of the 4-vector " <<  FourVector(t,x,y,z)
-	  	      << " is " << (FourVector(t,x,y,z)).modulus() << std::endl;
+	  std::cout << "The modulus squared of the 4-vector " <<  FourVector(t,x,y,z)
+		    << " is " << FourVector(t,x,y,z).modulusSquared() << std::endl;
 	}
       else
 	{
