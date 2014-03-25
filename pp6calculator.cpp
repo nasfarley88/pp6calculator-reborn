@@ -23,6 +23,30 @@ public:
   double modulus();
 };
 
+
+class FourVector
+{
+private:
+  double t_,x_,y_,z_;
+public:
+  FourVector()
+    : t_(0), x_(0), y_(0), z_(0) {}
+  FourVector(double t, double x, double y, double z)
+    : t_(t), x_(x), y_(y), z_(z) {}
+  double gett() const { return t_; }
+  double getx() const { return x_; }
+  double gety() const { return y_; }
+  double getz() const { return z_; }
+  ThreeVector getThreeVector() const { return ThreeVector(x_,y_,z_); }
+  double sett(double t) { t_ = t; return t_; }
+  double setx(double x) { x_ = x; return x_; }
+  double sety(double y) { y_ = y; return y_; }
+  double setz(double z) { z_ = z; return z_; }
+  double modulus();
+};
+
+
+
 double dot(ThreeVector a, ThreeVector b)
 {
   ///
@@ -47,6 +71,32 @@ std::ostream& operator<<(std::ostream& s, const ThreeVector& c)
   s << "(" << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
   return s;
 }
+
+std::ostream& operator<<(std::ostream& s, const FourVector& c)
+{
+  ///
+  /// Print a FourVector in the form (x, y, z)
+  /// 
+  s << "(" << c.gett() << ", " << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
+  return s;
+}
+
+double dot(FourVector a, FourVector b)
+{
+  ///
+  /// Define the dot (inner) product of a FourVector
+  /// 
+  return -a.gett()*b.gett() + a.getx()*b.getx() + a.gety()*b.gety() + a.getz()*b.getz();
+}
+
+double FourVector::modulus()
+{
+  ///
+  /// Define the modulus of a FourVector
+  /// 
+  return sqrt(dot(*this,*this));
+}
+
 
 double interceptXAxis(double m, double c)
 {
@@ -175,7 +225,6 @@ int main(int argc, char *argv[])
 	  coutChosen("3-vector modulus");
 	  std::cout << "Choose the x term: " << std::endl;
 	  promptForValue(&x);
-	  std::cout << x << std::endl;
 	  std::cout << "Choose the y term: " << std::endl;
 	  promptForValue(&y);
 	  std::cout << "Choose the z term: " << std::endl;
@@ -183,11 +232,25 @@ int main(int argc, char *argv[])
 
 	  
 	  std::cout << "The modulus of the 3-vector " <<  ThreeVector(x,y,z)
-		    << " is " << (ThreeVector(x,y,z)).modulus() << std::endl;
+		    << " is " << ThreeVector(x,y,z).modulus() << std::endl;
 	}
       else if(std::regex_match(decision,std::regex("(^4m$)|(.*\b4.vector.*modulus.*)")))
 	{
-	  std::cout << "You want to do a 4-vector modulus calculation" << std::endl;
+	  // Initialise variables for the FourVector
+	  double t,x,y,z;
+	  coutChosen("3-vector modulus");
+	  std::cout << "Choose the t term: " << std::endl;
+	  promptForValue(&t);
+	  std::cout << "Choose the x term: " << std::endl;
+	  promptForValue(&x);
+	  std::cout << "Choose the y term: " << std::endl;
+	  promptForValue(&y);
+	  std::cout << "Choose the z term: " << std::endl;
+	  promptForValue(&z);
+	    
+	    
+	  std::cout << "The modulus of the 4-vector " <<  FourVector(t,x,y,z)
+	  	      << " is " << (FourVector(t,x,y,z)).modulus() << std::endl;
 	}
       else
 	{
