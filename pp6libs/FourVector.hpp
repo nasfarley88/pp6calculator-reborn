@@ -1,5 +1,7 @@
 #ifndef FOURVECTOR_HPP
 #define FOURVECTOR_HPP
+#include "ThreeVector.hpp"
+
 
 class FourVector
 {
@@ -21,5 +23,8 @@ public:
   double setz(double z) { z_ = z; return z_; }
   double modulusSquared();
 };
+
+// dot product defined in FourVector.cpp
+double dot(FourVector a, FourVector b);
 
 #endif

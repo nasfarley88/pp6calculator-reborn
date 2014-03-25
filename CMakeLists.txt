@@ -14,8 +14,8 @@ endif()
 # includes
 include_directories(pp6libs)
 
-# libraries
-add_library(pp6libs pp6libs/ThreeVector.hpp pp6libs/ThreeVector.cpp)
+# add the library
+add_subdirectory(pp6libs)
 
 # add the pp6calculator program
 add_executable(pp6calculator pp6calculator.cpp)

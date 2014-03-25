@@ -6,9 +6,14 @@
 #include "ThreeVector.hpp"
 #include "FourVector.hpp"
 
-
-// TODO put these in separate files when CMake is working
-
+std::ostream& operator<<(std::ostream& s, const ThreeVector& c)
+{
+  ///
+  /// Print a ThreeVector in the form (x, y, z)
+  /// 
+  s << "(" << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
+  return s;
+}
 
 std::ostream& operator<<(std::ostream& s, const FourVector& c)
 {
@@ -18,26 +23,6 @@ std::ostream& operator<<(std::ostream& s, const FourVector& c)
   s << "(" << c.gett() << ", " << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
   return s;
 }
-
-double dot(FourVector a, FourVector b)
-{
-  ///
-  /// Define the dot (inner) product of a FourVector
-  ///
-  /// We're particle physicists so this uses the signature +---.
-  /// 
-
-  return a.gett()*b.gett() - a.getx()*b.getx() - a.gety()*b.gety() - a.getz()*b.getz();
-}
-
-double FourVector::modulusSquared()
-{
-  ///
-  /// Define the modulus of a FourVector
-  /// 
-  return dot(*this,*this);
-}
-
 
 double interceptXAxis(double m, double c)
 {
