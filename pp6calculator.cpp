@@ -4,7 +4,52 @@
 // #include <cmath>
 #include <complex>
 
-double interceptXAxis(double m, double c) {
+// TODO put these in separate files when CMake is working
+class ThreeVector
+{
+private:
+  double x_,y_,z_;
+public:
+  ThreeVector()
+    : x_(0), y_(0), z_(0) {}
+  ThreeVector(double x, double y, double z)
+    : x_(x), y_(y), z_(z) {}
+  double getx() const { return x_; }
+  double gety() const { return y_; }
+  double getz() const { return z_; }
+  double setx(double x) { x_ = x; return x_; }
+  double sety(double y) { y_ = y; return y_; }
+  double setz(double z) { z_ = z; return z_; }
+  double modulus();
+};
+
+double dot(ThreeVector a, ThreeVector b)
+{
+  ///
+  /// Define the dot (inner) product of a ThreeVector
+  /// 
+  return a.getx()*b.getx() + a.gety()*b.gety() + a.getz()*b.getz();
+}
+
+double ThreeVector::modulus()
+{
+  ///
+  /// Define the modulus of a ThreeVector
+  /// 
+  return sqrt(dot(*this,*this));
+}
+
+std::ostream& operator<<(std::ostream& s, const ThreeVector& c)
+{
+  ///
+  /// Print a ThreeVector in the form (x, y, z)
+  /// 
+  s << "(" << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
+  return s;
+}
+
+double interceptXAxis(double m, double c)
+{
   ///
   /// A function to calculate the intercept on the x-axis of a straight line
   /// 
@@ -52,7 +97,7 @@ quadraticRoots quadraticSolver(double aReal, double bReal, double cReal)
       roots.root1 = (-b+sqrt(b*b-4.0*a*c))/(2.0*a);
       roots.root2 = (-b-sqrt(b*b-4.0*a*c))/(2.0*a);
     }
-    return roots;
+  return roots;
 }
 
 void coutChosen(std::string x)
@@ -61,6 +106,18 @@ void coutChosen(std::string x)
   /// Function to cout "You have chosen the [x] function"
   /// 
   std::cout << "You have chosen the " << x << " function!" << std::endl;
+}
+
+template<typename T>
+void promptForValue(T *x)
+{
+  ///
+  /// Function for prompting for a single value, without spaces
+  ///
+
+  // Ask for it
+  std::cout << "> ";
+  std::cin >> *x;
 }
 
 int main(int argc, char *argv[])
@@ -108,6 +165,34 @@ int main(int argc, char *argv[])
 
       std::cout << "The roots for your chosen quadratic are  "
 		<< quadraticSolver(a,b,c) << std::endl;
+    }
+  else if(std::regex_match(decision,std::regex("(.*m$)|(.*modulus.*)")))
+    {
+      if(std::regex_match(decision,std::regex("(^3m$)|(.*\b3.vector.*modulus.*)")))
+	{
+	  // Initialise variables for the ThreeVector
+	  double x,y,z;
+	  coutChosen("3-vector modulus");
+	  std::cout << "Choose the x term: " << std::endl;
+	  promptForValue(&x);
+	  std::cout << x << std::endl;
+	  std::cout << "Choose the y term: " << std::endl;
+	  promptForValue(&y);
+	  std::cout << "Choose the z term: " << std::endl;
+	  promptForValue(&z);
+
+	  
+	  std::cout << "The modulus of the 3-vector " <<  ThreeVector(x,y,z)
+		    << " is " << (ThreeVector(x,y,z)).modulus() << std::endl;
+	}
+      else if(std::regex_match(decision,std::regex("(^4m$)|(.*\b4.vector.*modulus.*)")))
+	{
+	  std::cout << "You want to do a 4-vector modulus calculation" << std::endl;
+	}
+      else
+	{
+	  std::cout << "You want to do a modulus, but I'm not sure which one" << std::endl;
+	}
     }
   else
     {
