@@ -13,15 +13,17 @@ endif()
 
 # includes
 include_directories(pp6libs)
+include_directories(FileReader-1.0.0)
 
 # add the library
 add_subdirectory(pp6libs)
+add_subdirectory(FileReader-1.0.0)
 
 # add the pp6calculator program
 add_executable(pp6calculator pp6calculator.cpp)
 
 # link 'em
-target_link_libraries(pp6calculator pp6libs)
+target_link_libraries(pp6calculator pp6libs FileReader)
 
 # installing into bin subdirectory of CMAKE_INSTALL_PREFIX
 install(TARGETS pp6calculator DESTINATION bin)
