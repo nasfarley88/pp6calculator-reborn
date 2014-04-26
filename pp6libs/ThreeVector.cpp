@@ -21,3 +21,11 @@ double ThreeVector::modulus()
 }
 
 
+std::ostream& operator<<(std::ostream& s, const ThreeVector& c)
+{
+  ///
+  /// Print a ThreeVector in the form (x, y, z)
+  /// 
+  s << "(" << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
+  return s;
+}

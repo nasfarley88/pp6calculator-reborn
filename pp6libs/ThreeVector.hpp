@@ -1,5 +1,9 @@
 #ifndef THREEVECTOR_HPP
 #define THREEVECTOR_HPP
+
+#include <iostream>
+
+
 class ThreeVector
 {
 private:
@@ -16,6 +20,7 @@ public:
   double sety(double y) { y_ = y; return y_; }
   double setz(double z) { z_ = z; return z_; }
   double modulus();
+  friend std::ostream& operator<<(std::ostream& s, const ThreeVector& c);
 
 };
 

@@ -7,9 +7,10 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(pp6calculator)
 
 # standard flags. (if they're so standard, why are they not default?!)
-if(CMAKE_COMPLIER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "-std=c++98 -pedantic-errors -Wall -Wextra -Werror -Wfatal-errors -Wwrite-strings -Woverloaded-virtual -fno-nonansi-builtins -fno-gnu-keywords -fstrict-aliasing")
-endif()
+# if(CMAKE_COMPLIER_IS_GNUCXX)
+# TODO find out how to make yhis say 'if mac'
+set(CMAKE_CXX_FLAGS "-std=c++11 -pedantic-errors -Wall -Wextra -Werror -Wfatal-errors -Wwrite-strings -Woverloaded-virtual -fno-gnu-keywords -fstrict-aliasing")
+# endif()
 
 # includes
 include_directories(pp6libs)

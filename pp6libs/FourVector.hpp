@@ -1,6 +1,8 @@
 #ifndef FOURVECTOR_HPP
 #define FOURVECTOR_HPP
 #include "ThreeVector.hpp"
+#include <iostream>
+
 
 
 class FourVector
@@ -22,9 +24,12 @@ public:
   double sety(double y) { y_ = y; return y_; }
   double setz(double z) { z_ = z; return z_; }
   double modulusSquared();
+  friend std::ostream& operator<<(std::ostream& s, const FourVector& c);
 };
 
 // dot product defined in FourVector.cpp
 double dot(FourVector a, FourVector b);
+
+
 
 #endif

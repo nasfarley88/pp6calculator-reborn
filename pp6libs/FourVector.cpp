@@ -21,3 +21,11 @@ double FourVector::modulusSquared()
   return dot(*this,*this);
 }
 
+std::ostream& operator<<(std::ostream& s, const FourVector& c)
+{
+  ///
+  /// Print a FourVector in the form (x, y, z).
+  ///
+  s << "(" << c.gett() << ", " << c.getx() << ", " << c.gety() << ", " << c.getz() << ")";
+  return s;
+}
